@@ -66,7 +66,7 @@ app.use(requestLogger)
 app.use(exampleRoutes)
 app.use(userRoutes)
 const itemsRouter=require('./app/routes/item_router')
-app.use("/items",itemsRouter)
+app.use(itemsRouter)
 
 // register error handling middleware
 // note that this comes after the route middlewares, because it needs to be

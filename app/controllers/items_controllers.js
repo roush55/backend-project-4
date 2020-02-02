@@ -1,10 +1,13 @@
   const db =require('../../config/config')
 const Item=require('../models/art')
+///const User =require('../models/user')
 // import passport
 const passport = require('passport');
 const customErrors = require('../../lib/custom_errors')
 const requireToken = passport.authenticate('bearer',{session:false})
 const requireOwnership = customErrors.requireOwnership
+
+
 const create=(req,res)=>{
     const userId = req.user.id;
        newItem=req.body.Item //get the info from body parser

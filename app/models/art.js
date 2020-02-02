@@ -1,6 +1,24 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
+const biderSchema = new Schema({
+    owner: {
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"User",
+        required:true
+    },
+    price:{
+        type: Number,
+        required: true
+    },
+    item:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"Item",
+        required:true
+    }
+},{
+    timestamps: true
+})
 
 
 const itemSchema = new mongoose.Schema({
@@ -18,7 +36,8 @@ owner:{
     type:mongoose.Schema.Types.ObjectId,
     ref:"User",
     required:true
-}
+},
+biders: [biderSchema]
 }
 ,{timestamps:true}
 
