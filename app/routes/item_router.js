@@ -39,14 +39,13 @@ router.post("/items",requireToken,(req,res,next) => {
 //update the item 
 router.patch("/items/:id",requireToken,(req,res,next) => {
     const idItem = req.params.id;
+    
     const updateItem = req.body.item;
-
-
     Item.findById(idItem)
     .then(handle404)
     .then((item) => {
         requireOwnership(req,item)
-        return meme.update(updateItem)
+        return item.update(updateItem)
     })
     .then(() => res.sendStatus(204))
     .catch(next)});
