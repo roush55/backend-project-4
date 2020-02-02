@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
 
 
@@ -10,9 +11,18 @@ const itemSchema = new mongoose.Schema({
             type:Number,
             required:true},
          img:{type:String,
-            required:true}
+            required:true},
     
-},{timestamps:true});
+
+owner:{
+    type:mongoose.Schema.Types.ObjectId,
+    ref:"User",
+    required:true
+}
+}
+,{timestamps:true}
+
+);
 
 
 

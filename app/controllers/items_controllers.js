@@ -1,10 +1,15 @@
   const db =require('../../config/config')
-const Item=require('../models/store')
-
-
+const Item=require('../models/art')
+// import passport
+const passport = require('passport');
+const customErrors = require('../../lib/custom_errors')
+const requireToken = passport.authenticate('bearer',{session:false})
+const requireOwnership = customErrors.requireOwnership
 const create=(req,res)=>{
-    newItem=req.body //get the info from body parser
-    item= new Item (newItem)
+    const userId = req.user.id;
+       newItem=req.body.Item //get the info from body parser
+        newItem.owner = userId
+         item= new Item (newItem)
     item.save()
     .then(
         item => res.send(item)
@@ -21,7 +26,7 @@ const update=(req,res)=>{
    }
    )
   .then(  
-    restrant => res.send(item.name + "update")
+    item => res.send(item.name + "update")
    )
    .catch(
       err => res.send(err)
@@ -51,9 +56,20 @@ const index=(req,res)=> {
         err => console.log(err)
     )
 }
-// //update function 
-// const update ={
-//     id=req.params.id
-
-// }
-module.exports={create,index,show ,update}
+const destroy = (req, res) => {
+    const id = req.params.id
+    Item.findById(id)
+    .then(
+       item => item.remove()
+        .then(
+            item => res.send(item.name + " deleted")
+        )
+        .catch(
+            err => res.send(err)
+        )
+    )
+    .catch(
+        err => res.send(err)
+    )
+}
+module.exports={create,index,show ,update,destroy}
