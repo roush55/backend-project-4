@@ -1,8 +1,9 @@
 //import router for express
 const express=require('express')
 const passport = require('passport');
-//create router for items
-const router =express.Router()
+
+const Item=require('../models/art.js')
+const user=require('../models/user')
 const customErrors = require('../../lib/custom_errors')
 
 const handle404 = customErrors.handle404;
@@ -12,9 +13,7 @@ const requireOwnership = customErrors.requireOwnership;
 
 const requireToken = passport.authenticate('bearer', {session:false})
 
-
-const Item=require('../models/art')
-const User=require('../models/user')
+const router = express.Router();
 //index
 router.get("/items",requireToken,(req,res,next) => {
     const id = req.user.id;
@@ -37,23 +36,23 @@ router.post("/items",requireToken,(req,res,next) => {
     .catch(next);
 });
 //update the item 
-router.patch("/items/:id",requireToken,(req,res,next) => {
-    const idItem = req.params.id;
-    
-    const updateItem = req.body.item;
-    Item.findById(idItem)
+router.patch('/items/:id',requireToken,(req,res,next) => {
+    const itemId = req.params.id;
+    const updateItem =req.body.item;
+    Item.findById(itemId)
     .then(handle404)
-    .then((item) => {
+    .then((item)=>{
         requireOwnership(req,item)
         return item.update(updateItem)
     })
-    .then(() => res.sendStatus(204))
-    .catch(next)});
+    .then(()=> res.sendStatus(204))
+    .catch(next)
+})
 
 //show
 router.get("/items/:id",requireToken,(req,res,next) => {
-    const idItem = req.params.id
-    Item.findById(idItem)
+    const itemId = req.params.id
+    Item.findById(itemId)
     .then(handle404)
     .then((item) => {
         requireOwnership(req,item)
@@ -61,15 +60,16 @@ router.get("/items/:id",requireToken,(req,res,next) => {
     })
     .catch(next)
 });
-router.delete("/items/:id", requireToken,(req,res,next) => {
-    const idItem = req.params.id
-    Item.findById(idItem)
+router.delete('/items/:id',requireToken,(req,res,next) => {
+    const itemId= req.params.id
+    Item.findById(itemId)
     .then(handle404)
     .then((item) => {
         requireOwnership(req,item)
         item.remove()
     })
     .then(() => res.sendStatus(204))
+    
     .catch(next)
 })
 
