@@ -14,14 +14,23 @@ const requireOwnership = customErrors.requireOwnership;
 const requireToken = passport.authenticate('bearer', {session:false})
 
 const router = express.Router();
+//show all arts 
+router.get("/items/all",(req,res,next) => {
+    Item.find({})
+    .then(items => {
+        res.status(200).json({items:items})
+    })
+    .catch(err => console.log(err))
+})
+
 //index
 router.get("/items",requireToken,(req,res,next) => {
     const id = req.user.id;
-   Item.find({'owner':id})
-   .then((items) => {
-       res.status(200).json({items:items})
-   })
-   .catch(next);
+    Item.find({'owner':id})
+    .then((items) => {
+        res.status(200).json({items:items})
+    })
+    .catch(next);
 });
 //create 
 router.post("/items",requireToken,(req,res,next) => {
@@ -36,7 +45,7 @@ router.post("/items",requireToken,(req,res,next) => {
     .catch(next);
 });
 //update the item 
-router.patch('/items/:id',requireToken,(req,res,next) => {
+router.put('/items/:id',requireToken,(req,res,next) => {
     const itemId = req.params.id;
     const updateItem =req.body.item;
     Item.findById(itemId)
@@ -49,17 +58,22 @@ router.patch('/items/:id',requireToken,(req,res,next) => {
     .catch(next)
 })
 
+
+
+
 //show
 router.get("/items/:id",requireToken,(req,res,next) => {
+    // console.log('xxx')
     const itemId = req.params.id
     Item.findById(itemId)
     .then(handle404)
     .then((item) => {
-        requireOwnership(req,item)
+    //requireOwnership(req,item)
         res.status(200).json({item:item})
     })
     .catch(next)
 });
+
 router.delete('/items/:id',requireToken,(req,res,next) => {
     const itemId= req.params.id
     Item.findById(itemId)
