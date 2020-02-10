@@ -8,7 +8,7 @@ Art Gallery full-stack web application,the client can share their art via the w
 
 ## Backend with Express&&MongoDB:
  
- [![wireframe](wireframe.png)] 
+ [wireframe](wireframe.png)
  - create models && set up the relations. 
  - finished from the crud for the backend .  
  - test on the functionality with the postman.   
