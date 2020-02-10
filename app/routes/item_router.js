@@ -2,7 +2,7 @@
 const express=require('express')
 const passport = require('passport');
 
-const Item=require('../models/art.js')
+const Item=require('../models/item.js')
 const user=require('../models/user')
 const customErrors = require('../../lib/custom_errors')
 
@@ -15,9 +15,9 @@ const requireToken = passport.authenticate('bearer', {session:false})
 
 const router = express.Router();
 //show all arts 
-router.get("/items/all",(req,res,next) => {
-    Item.find({})
-    .then(items => {
+router.get("/all",(req,res) => {
+    Item.find()
+    .then((items) => {
         res.status(200).json({items:items})
     })
     .catch(err => console.log(err))
