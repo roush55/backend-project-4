@@ -17,7 +17,7 @@ create models && set up the relations. 
 
 
 
-##Resource
+## Resource
 https://reactjs.org/
 https://mdbootstrap.com/
 
