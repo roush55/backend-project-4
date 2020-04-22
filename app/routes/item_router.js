@@ -15,8 +15,9 @@ const requireToken = passport.authenticate('bearer', {session:false})
 
 const router = express.Router();
 //show all arts 
-router.get("/all",(req,res) => {
+router.get("/art",(req,res) => {
     Item.find()
+    .populate('owner')
     .then((items) => {
         res.status(200).json({items:items})
     })
